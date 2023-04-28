@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>Регистрация на сайте</h1>
+<form method="post">
+    <input type="text" name="nick" id="nick" placeholder="Введите никнейм"><br>
+    <input type="text" name="email" id="email" placeholder="Введите e-mail"><br>
+    <input type="password" name="password" id="password" placeholder="Введите пароль"><br>
+    <select name="main_language" id="main_language">
+        <option value="Python">Python</option>
+        <option value="PHP">PHP</option>
+        <option value="Java">Java</option>
+        <option value="GO">GO</option>
+    </select><br>
+    <select name="level" id="level">
+        <option value="Intern">Intern</option>
+        <option value="Junior">Junior</option>
+        <option value="Middle">Middle</option>
+        <option value="Senior"></option>
+    </select><br>
+    <button type="submit">Зарегистрироваться</button>
+</form>
+{% endblock %}

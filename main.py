@@ -1,8 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///eureka.db'
+app.config['SECRET_KEY'] = 'serg'
 
 db = SQLAlchemy(app)
 
@@ -16,9 +18,16 @@ class User(db.Model):
     about = db.Column(db.Text)
     level = db.Column(db.String, nullable=False)
     main_language = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
 
     def __repr__(self):
         return self.nick
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 class Project(db.Model):
@@ -67,6 +76,42 @@ def edit_profile():
 @app.route('/matches')
 def matches():
     return render_template('matches.html', title='Ваши Эврики!')
+
+
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+
+    if request.method == 'POST':
+
+        nick = request.form['nick']
+        email = request.form['email']
+        password = generate_password_hash(request.form['password'])
+        main_language = request.form['main_language']
+        level = request.form['level']
+
+        if not db.session.query(User).filter_by(nick=nick).first() and not db.session.query(User).filter_by(email=email).first():
+
+            user = User(nick=nick, email=email, password=password, main_language=main_language,
+                        level=level)
+
+            try:
+
+                db.session.add(user)
+                db.session.commit()
+                flash('Регистрация прошла успешно!', 'success')
+                return redirect('/login')
+            except Exception as e:
+                return render_template('error.html', title='Ошибка', error=e)
+        else:
+            return render_template('error.html', title='Ошибка', error='Already registered')
+    return render_template('registration.html', title='Регистрация')
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        pass
+    return render_template('login.html', title='Авторизация')
 
 
 if __name__ == '__main__':
