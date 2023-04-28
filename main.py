@@ -24,5 +24,25 @@ def main():
     return render_template('main.html', title='Главная страница')
 
 
+@app.route('/projects')
+def projects():
+    return render_template('projects.html', title='Ваши проекты')
+
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html', title='Профиль')
+
+
+@app.route('/profile/edit')
+def edit_profile():
+    return render_template('edit_profile.html', title='Редактирование профиля')
+
+
+@app.route('/matches')
+def matches():
+    return render_template('matches.html', title='Ваши Эврики!')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
