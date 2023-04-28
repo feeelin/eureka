@@ -36,6 +36,9 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return self.nick
 
+    def is_authenticated(self):
+        return True
+
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -76,7 +79,7 @@ def projects():
 @app.route('/profile')
 @login_required
 def profile():
-    return render_template('profile.html', title='Профиль')
+    return render_template('profile.html', title='Профиль', user=current_user)
 
 
 @app.route('/profile/edit')
@@ -119,6 +122,8 @@ def registration():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    if current_user.is_authenticated:
+        return redirect('/profile')
     if request.method == 'POST':
         user = User.query.filter_by(nick=request.form['nick']).first()
         if user:
@@ -134,6 +139,16 @@ def login():
 def logout():
     logout_user()
     return redirect('/')
+
+
+@app.errorhandler(401)
+def custom_401(error):
+    return redirect('/login')
+
+
+@app.errorhandler(404)
+def custom_404(error):
+    return render_template('404.html', title='Хмммм...')
 
 
 if __name__ == '__main__':
