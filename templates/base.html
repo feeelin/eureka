@@ -7,10 +7,7 @@
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
 </head>
 <body>
-    <header>
-        <a href=""><img src="static/images/logo.jpg" alt="Arch logo"  width = 200 px height = 50 px></a>
-    </header>
-
+    
     <div id="wrapper">
 		<header></header>
 		<nav></nav>
@@ -21,13 +18,16 @@
 
     <nav class="menu">
         <ul class="top-menu">
+         <li class="logo"><img src="static/images/logo.jpg" alt="Arch logo"  width = 200 px height = 50 px></li>
          <li class="active">Лента</li>
          <li><a href="/projects">Проекты</a></li>
          <li><a href="/profile">Профиль</a></li>
          <li><a href="/matches">Эврики</a></li>
+         <li><img src="static/images/user.jpg" alt="user"  width = 30 px height = 30 px></li>
         </ul>
        
     </nav>
+
 
     {% block body %}
     {% endblock %}
