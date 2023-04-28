@@ -13,10 +13,35 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False)
     name = db.Column(db.String)
     second_name = db.Column(db.String)
-    about = db.Column(db.Text(500))
+    about = db.Column(db.Text)
+    level = db.Column(db.String, nullable=False)
+    main_language = db.Column(db.String, nullable=False)
 
     def __repr__(self):
         return self.nick
+
+
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(20), nullable=False)
+    about = db.Column(db.Text, nullable=False)
+    image = db.Column(db.String)
+    front_language = db.Column(db.String, nullable=False)
+    back_language = db.Column(db.String, nullable=False)
+    level = db.Column(db.String, nullable=False)
+
+    def __repr__(self):
+        return self.title
+
+
+class Matches(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    project_id = db.Column(db.Integer, nullable=False)
+    is_approved = db.Column(db.Integer, default=0)
+
+    def __repr__(self):
+        return f'{self.user_id} user + {self.project_id} = {self.is_approved}'
 
 
 @app.route('/')
