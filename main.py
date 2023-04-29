@@ -15,6 +15,7 @@ login_manager = LoginManager(app)
 languages = ['Python', 'Java', 'C', 'C++', 'C#', 'JavaScript', 'PHP',
              'GO', 'Assembly', 'Swift', 'Kotlin', 'Ruby', 'Rust']
 
+
 # load_user подгружает в сессию информацию о залогиненом пользователе
 
 
@@ -77,6 +78,19 @@ class Matches(db.Model):
     def __repr__(self):
         return f'{self.user_id} user + {self.project_id} = {self.is_approved}'
 
+    # класс Achievements является моделью БД для хранения данных о статусах пользователя
+
+
+class Achievements(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    coffee = db.Column(db.Integer)
+    production_lost = db.Column(db.Integer)
+    teamlead_shouts = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f'{self.id}'
+
 
 # функция main отслеживает url '/' и при запросе возвращает HTML-страницу, подставляя в блок title название
 
@@ -86,7 +100,7 @@ def main():
     return render_template('main.html', title='Главная страница')
 
 
-# функция search отслеживает url '/search' и при запросе формирует все подходящие для пользователя проекты, подставляя
+# Функция search отслеживает url '/search' и при запросе формирует все подходящие для пользователя проекты, подставляя
 # их в HTML-документ. Работает только для авторизованных пользователей
 
 
@@ -201,7 +215,8 @@ def delete_project(project_id):
 
 @app.route('/profile/<int:user_id>')
 def profile(user_id):
-    return render_template('profile.html', title='Профиль', user=User.query.get(user_id))
+    stats = db.session.query(Achievements).filter_by(user_id=user_id).first()
+    return render_template('profile.html', title='Профиль', user=User.query.get(user_id), stats=stats)
 
 
 # функция profile_owner открывает профиль пользователя для самого пользователя с возможностью выхода из аккаунта и
@@ -211,7 +226,8 @@ def profile(user_id):
 @app.route('/profile')
 @login_required
 def profile_owner():
-    return render_template('profile_owner.html', title='Профиль', user=current_user)
+    stats = db.session.query(Achievements).filter_by(user_id=current_user.id).first()
+    return render_template('profile_owner.html', title='Профиль', user=current_user, stats=stats)
 
 
 # функция profile edit загружает форму для редактирования данных профиля пользователя
@@ -265,12 +281,15 @@ def matches():
     matches = db.session.query(Matches).filter_by(user_id=current_user.id, is_approved=1).all()
     print(matches)
     projects = []
+    emails = []
 
     for i in matches:
         project = db.session.query(Project).filter_by(id=i.project_id).first()
+        user = db.session.query(User).filter_by(id=project.founder_id).first()
         projects.append(project.title)
+        emails.append(user.email)
 
-    return render_template('matches.html', title='Эврики!', user=people, projects=projects)
+    return render_template('matches.html', title='Эврики!', user=people, projects=projects, emails=emails)
 
 
 # функция like занимается отправлением отзыва в базу данных, после чего возвращает пользователя обратно на страницу
@@ -349,7 +368,8 @@ def registration():
             except Exception as e:
                 return render_template('error.html', title='Ошибка', error=e)
         else:
-            return render_template('error.html', title='Ошибка', error='Пользователь с такими данными уже зарегистрирован')
+            return render_template('error.html', title='Ошибка',
+                                   error='Пользователь с такими данными уже зарегистрирован')
     return render_template('registration.html', title='Регистрация', languages=languages)
 
 
@@ -379,7 +399,7 @@ def logout():
     return redirect('/')
 
 
-# Последние два метода необходимы для более комфортного отображения ошибок на сайте
+# два метода необходимы для более комфортного отображения ошибок на сайте
 # конкретнее для ошибок 401 и 404
 
 
@@ -391,6 +411,29 @@ def custom_401(error):
 @app.errorhandler(404)
 def custom_404(error):
     return render_template('404.html', title='Хмммм...')
+
+
+# метод stats предназначен для формирования шутливой статистики
+
+
+@app.route('/profile/stats', methods=['POST', 'GET'])
+def stats():
+    if request.method == 'POST':
+        user_id = current_user.id
+        coffee = request.form['coffee']
+        production_lost = request.form['production_lost']
+        teamlead_shouts = request.form['teamlead_shouts']
+
+        stats = Achievements(user_id=user_id, coffee=coffee, production_lost=production_lost, teamlead_shouts=teamlead_shouts)
+
+        try:
+            db.session.add(stats)
+            db.session.commit()
+            return redirect('/profile')
+        except:
+            return render_template('error.html', title='Ошибка', error='Не удалось обновить статистику')
+
+    return render_template('make_stats.html', title='Добавление статистики')
 
 
 if __name__ == '__main__':

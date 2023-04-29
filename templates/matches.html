@@ -4,13 +4,13 @@
 <h1>Ваши эврики</h1>
 {% if projects %}
 <div class="py-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-{% for el in projects %}
+{% for i in range(projects | length) %}
 <div class="col">
 <div class="card shadow-sm">
 <div class="card-body">
-<h3 class="card-text" style='text-align: center'>{{el}}</h3>
+<h3 class="card-text" style='text-align: center'>{{projects[i]}}</h3>
 <div class="d-flex justify-content-center align-items-center">
-<p>Эврика!</p>
+<p>{{emails[i]}}!</p>
 </div>
 </div>
 </div>

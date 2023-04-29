@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<form method="POST">
+<p>
+<label class='form-label' for="coffee">Кружек кофе на работе выпито:</label>
+<input class='form-control' type="number" name="coffee" id="coffee">
+</p>
+<p>
+<label class='form-label' for="production_lost">Продакшнов уронено: </label>
+<input class='form-control' type="number" name="production_lost" id="production_lost">
+</p>
+<p>
+<label class='form-label' for="teamlead_shouts">Ссор с тимлидом: </label>
+<input class='form-control' type="number" name="teamlead_shouts" id="teamlead_shouts">
+</p>
+<button type="submit" class="btn btn-success">Сохранить</button>
+</form>
+{% endblock %}

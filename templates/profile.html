@@ -15,6 +15,11 @@
 {% if user.about %}
 <p style="text-align: justify">{{user.about}}</p>
 {% endif %}
+{% if stats %}
+<p><b>Кружек кофе на работе выпито: </b>{{stats.coffee}}</p>
+<p><b>Продакшнов уронено: </b>{{stats.production_lost}}</p>
+<p><b>Ссор с тимлидом пережито: </b>{{stats.teamlead_shouts}}</p>
+{% endif %}
 </div>
 <div>
 {%if user.img%}
