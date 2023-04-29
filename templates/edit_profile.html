@@ -1,5 +1,37 @@
 {% extends 'base.html' %}
 
 {% block body %}
-Редактирование профиля
+<h1>Редактирование профиля</h1>
+<form method="post">
+
+    <p><label for="email">e-mail</label>
+    <input type="text" value="{{user.email}}" name="email" id="email"></p>
+
+    <p><label for="name">Имя</label>
+        <input type="text" value="{% if user.name %}{{user.name}}{%endif%}" name="name" id="name"></p>
+
+    <p><label for="second_name">Фамилия</label>
+    <input type="text" value="{% if user.second_name %}{{user.second_name}}{%endif%}" name="second_name" id="second_name"></p>
+
+    <p><label for="about">О вас</label>
+    <textarea name="about" id="about">{% if user.about %}{{user.about}}{%endif%}</textarea></p>
+
+    <p><label for="main_language">Ваш основной язык</label>
+    <select name="main_language" id="main_language">
+        <option value="Python">Python</option>
+        <option value="PHP">PHP</option>
+        <option value="Java">Java</option>
+        <option value="GO">GO</option>
+    </select></p>
+
+    <p><label for="level">Ваш уровень</label>
+    <select name="level" id="level">
+        <option value="Intern">Intern</option>
+        <option value="Junior">Junior</option>
+        <option value="Middle">Middle</option>
+        <option value="Senior">Senior</option>
+    </select></p>
+
+    <button type="submit">Сохранить</button>
+</form>
 {% endblock %}

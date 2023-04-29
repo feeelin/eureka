@@ -88,10 +88,30 @@ def profile_owner():
     return render_template('profile_owner.html', title='Профиль', user=current_user)
 
 
-@app.route('/profile/edit')
+@app.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    return render_template('edit_profile.html', title='Редактирование профиля')
+    user = current_user
+    if request.method == 'POST':
+        user.email = request.form['email']
+        if request.form['name']:
+            user.name = request.form['name']
+        if request.form['second_name']:
+            user.second_name = request.form['second_name']
+        if request.form['about']:
+            user.about = request.form['about']
+        user.main_language = request.form['main_language']
+        user.level = request.form['level']
+
+        try:
+            db.session.add(user)
+            db.session.commit()
+            db.session.refresh(user)
+            return redirect('/profile')
+        except Exception as e:
+            db.session.rollback()
+            return render_template('error.html', title='Ошибка', error=e)
+    return render_template('edit_profile.html', title='Редактирование профиля', user=current_user)
 
 
 @app.route('/matches')
