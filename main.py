@@ -48,6 +48,7 @@ class Project(db.Model):
     front_language = db.Column(db.String, nullable=False)
     back_language = db.Column(db.String, nullable=False)
     level = db.Column(db.String, nullable=False)
+    founder_id = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return self.title
@@ -76,13 +77,19 @@ def projects():
     return render_template('projects.html', title='Ваши проекты')
 
 
+@app.route('/profile/<int:user_id>')
+def profile(user_id):
+    return render_template('profile.html', title='Профиль', user=User.query.get(user_id))
+
+
 @app.route('/profile')
 @login_required
-def profile():
-    return render_template('profile.html', title='Профиль', user=current_user)
+def profile_owner():
+    return render_template('profile_owner.html', title='Профиль', user=current_user)
 
 
 @app.route('/profile/edit')
+@login_required
 def edit_profile():
     return render_template('edit_profile.html', title='Редактирование профиля')
 
