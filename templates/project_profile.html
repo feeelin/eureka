@@ -2,35 +2,35 @@
 
 {%block body%}
 <div class="profile_container">
-  <div class="profile_text">
-    {% if user.id == project.founder_id %}
-      <a class='btn btn-warning' href="/projects/{{project.id}}/delete">Удалить проект</a>
-    {% else %}
-      {% if like %}
-      <p style='color:#8aff15'>Вы откликнулись на этот проект</p>
-      {% else %}
-      <a class='btn btn-success' href="/projects/{{project.id}}/like/{{user.id}}">Откликнуться</a>
-      {% endif %}
-    {% endif %}
-    <h1 class="py-3">{{project.title}}</h1>
-    {% if project.about %}
-    <p style="text-align: justify">{{project.about}}</p>
-    {% endif %}
-    <p><b>Фронтенд:</b>
-    {% if project.front_language %}
-    Требуется
-    {% else %}
-    Не требуется
-    {% endif %}
-    </p>
-    <p>
-      <b>Backend: </b> {{project.back_language}}
-    </p>
-    </div>
-    <div>
-    {%if project.img%}
-    <img class='profile_image' src="{{project.img}}">
-    {%endif%}
-    </div>
-    </div>
+<div class="profile_text">
+{% if user.id == project.founder_id %}
+<a class='btn btn-warning' href="/projects/{{project.id}}/delete">Удалить проект</a>
+{% else %}
+{% if like %}
+<p style='color:#8aff15'>Вы откликнулись на этот проект</p>
+{% else %}
+<a class='btn btn-success' href="/projects/{{project.id}}/like/{{user.id}}">Откликнуться</a>
+{% endif %}
+{% endif %}
+<h1 class="py-3">{{project.title}}</h1>
+{% if project.about %}
+<p style="text-align: justify">{{project.about}}</p>
+{% endif %}
+<p><b>Фронтенд:</b>
+{% if project.front_language %}
+Требуется
+{% else %}
+Не требуется
+{% endif %}
+</p>
+<p>
+<b>Backend: </b> {{project.back_language}}
+</p>
+</div>
+<div>
+{%if project.img%}
+<img class='profile_image' src="{{project.img}}">
+{%endif%}
+</div>
+</div>
 {%endblock%}

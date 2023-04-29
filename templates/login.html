@@ -2,18 +2,17 @@
 
 {% block body %}
 <div class="profile_container">
-  <div>
-    <img class='reg_img' src="/static/images/auth.png" alt="auth" style='margin-left: 100px;'>
-  </div>
-  <div  style='margin-left: auto'>
-    <h1 class="py-3">Авторизация</h1>
-    <form method="POST">
-        <input type="text" name="nick" id="nick" placeholder="Введите логин" class="form-control"><br>
-        <input type="password" name="password" id="password" placeholder="Введите пароль" class="form-control"><br>
-        <button type="submit" class="btn btn-success">Войти</button>
-        <p style='margin-top: 10px;'>Нет аккаунта?<br> <a href="/registration">Зарегистрируйся!</a></p>
-    </form>
-  </div>
+<div>
+<img class='reg_img' src="/static/images/auth.png" alt="auth" style='margin-left: 100px;'>
 </div>
-
+<div  style='margin-left: auto'>
+<h1 class="py-3">Авторизация</h1>
+<form method="POST">
+<input type="text" name="nick" id="nick" placeholder="Введите логин" class="form-control"><br>
+<input type="password" name="password" id="password" placeholder="Введите пароль" class="form-control"><br>
+<button type="submit" class="btn btn-success">Войти</button>
+<p style='margin-top: 10px;'>Нет аккаунта?<br> <a href="/registration">Зарегистрируйся!</a></p>
+</form>
+</div>
+</div>
 {% endblock %}

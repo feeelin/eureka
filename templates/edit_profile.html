@@ -3,38 +3,30 @@
 {% block body %}
 <h1 class="py-3">Редактирование профиля</h1>
 <form method="post">
-
-    <p><label for="email" class="form-label">e-mail</label>
-    <input class="form-control" type="text" value="{{user.email}}" name="email" id="email"></p>
-
-    <p><label for="name" class="form-label">Имя</label>
-        <input class="form-control" type="text" value="{% if user.name %}{{user.name}}{%endif%}" name="name" id="name"></p>
-
-    <p><label for="second_name" class="form-label">Фамилия</label>
-    <input class="form-control" type="text" value="{% if user.second_name %}{{user.second_name}}{%endif%}" name="second_name" id="second_name"></p>
-
-    <p><label for="about" class="form-label">О вас</label>
-    <textarea class="form-control" name="about" id="about">{% if user.about %}{{user.about}}{%endif%}</textarea></p>
-
-    <p><label for="main_language" class="form-label">Ваш основной язык</label>
-    <select class="form-select" name="main_language" id="main_language">
-        <option value="Python">Python</option>
-        <option value="PHP">PHP</option>
-        <option value="Java">Java</option>
-        <option value="GO">GO</option>
-    </select></p>
-
-    <p><label for="level" class="form-label">Ваш уровень</label>
-    <select class="form-select" name="level" id="level">
-        <option value="Intern">Intern</option>
-        <option value="Junior">Junior</option>
-        <option value="Middle">Middle</option>
-        <option value="Senior">Senior</option>
-    </select></p>
-
-    <label for="img" class="form-label">Ссылка на фото профиля</label>
-    <input  class="form-control" type="text" name="img" id="img" placeholder="Введите ссылку" value="{% if user.img %}{{user.img}}{% endif %}"><br>
-
-    <button type="submit" class="btn btn-success">Сохранить</button>
+<p><label for="email" class="form-label">e-mail</label>
+<input class="form-control" type="text" value="{{user.email}}" name="email" id="email"></p>
+<p><label for="name" class="form-label">Имя</label>
+<input class="form-control" type="text" value="{% if user.name %}{{user.name}}{%endif%}" name="name" id="name"></p>
+<p><label for="second_name" class="form-label">Фамилия</label>
+<input class="form-control" type="text" value="{% if user.second_name %}{{user.second_name}}{%endif%}" name="second_name" id="second_name"></p>
+<p><label for="about" class="form-label">О вас</label>
+<textarea class="form-control" name="about" id="about">{% if user.about %}{{user.about}}{%endif%}</textarea></p>
+<p><label for="main_language" class="form-label">Ваш основной язык</label>
+<select class="form-select" name="main_language" id="main_language">
+<option value="Python">Python</option>
+<option value="PHP">PHP</option>
+<option value="Java">Java</option>
+<option value="GO">GO</option>
+</select></p>
+<p><label for="level" class="form-label">Ваш уровень</label>
+<select class="form-select" name="level" id="level">
+<option value="Intern">Intern</option>
+<option value="Junior">Junior</option>
+<option value="Middle">Middle</option>
+<option value="Senior">Senior</option>
+</select></p>
+<label for="img" class="form-label">Ссылка на фото профиля</label>
+<input  class="form-control" type="text" name="img" id="img" placeholder="Введите ссылку" value="{% if user.img %}{{user.img}}{% endif %}"><br>
+<button type="submit" class="btn btn-success">Сохранить</button>
 </form>
 {% endblock %}

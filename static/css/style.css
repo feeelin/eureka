@@ -26,7 +26,7 @@ a:hover{
 
 .nav_img_link{
   margin-left: 0;
-  margin-righ: auto;
+  margin-right: auto;
 }
 
 .profile_container{
@@ -48,17 +48,6 @@ a:hover{
 .reg_img{
   width:600px;
 }
-/*
-#preloader {
-  position:fixed;
-  left:0;
-  top:0;
-  z-index:5;
-  width:100%;
-  height:100%;
-  overflow:visible;
-  background: #fff url('../images/preloader.gif') no-repeat center center;
-}*/
 
 .main_content {
   margin-top: 50px;
