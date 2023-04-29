@@ -363,7 +363,6 @@ def registration():
             try:
                 db.session.add(user)
                 db.session.commit()
-                flash('Регистрация прошла успешно!', 'success')
                 return redirect('/login')
             except Exception as e:
                 return render_template('error.html', title='Ошибка', error=e)
@@ -419,22 +418,31 @@ def custom_404(error):
 @app.route('/profile/stats', methods=['POST', 'GET'])
 def stats():
     if request.method == 'POST':
-        user_id = current_user.id
-        coffee = request.form['coffee']
-        production_lost = request.form['production_lost']
-        teamlead_shouts = request.form['teamlead_shouts']
 
-        stats = Achievements(user_id=user_id, coffee=coffee, production_lost=production_lost, teamlead_shouts=teamlead_shouts)
+        stat = db.session.query(Achievements).filter_by(user_id=current_user.id).first()
+
+        if stat:
+            stat.coffee = request.form['coffee']
+            stat.production_lost = request.form['production_lost']
+            stat.teamlead_shouts = request.form['teamlead_shouts']
+
+        else:
+            coffee = request.form['coffee']
+            production_lost = request.form['production_lost']
+            teamlead_shouts = request.form['teamlead_shouts']
+            stat = Achievements(user_id=current_user.id, coffee=coffee, production_lost=production_lost,
+                                 teamlead_shouts=teamlead_shouts)
 
         try:
-            db.session.add(stats)
+            db.session.add(stat)
             db.session.commit()
             return redirect('/profile')
-        except:
+        except Exception as e:
+            print(e)
             return render_template('error.html', title='Ошибка', error='Не удалось обновить статистику')
 
     return render_template('make_stats.html', title='Добавление статистики')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
