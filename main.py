@@ -45,7 +45,7 @@ class Project(db.Model):
     title = db.Column(db.String(20), nullable=False)
     about = db.Column(db.Text, nullable=False)
     image = db.Column(db.String)
-    front_language = db.Column(db.String, nullable=False)
+    front_language = db.Column(db.Integer, nullable=False)
     back_language = db.Column(db.String, nullable=False)
     level = db.Column(db.String, nullable=False)
     founder_id = db.Column(db.Integer, nullable=False)
@@ -73,8 +73,34 @@ def main():
 
 
 @app.route('/projects')
+@login_required
 def projects():
+    projects = db.session.query(Project).filter_by(founder_id=current_user.id).all()
     return render_template('projects.html', title='Ваши проекты')
+
+
+@app.route('/projects/create', methods=['GET', 'POST'])
+@login_required
+def create_project():
+    if request.method == 'POST':
+        title = request.form['title']
+        img = request.form['img']
+        about = request.form['about']
+        front_language = int(request.form['front_language'])
+        back_language = request.form['back_language']
+        level = request.form['level']
+        founder_id = int(current_user.id)
+
+        project = Project(title=title, image=img, about=about, front_language=front_language,
+                          back_language=back_language, founder_id=founder_id, level=level)
+
+        try:
+            db.session.add(project)
+            db.session.commit()
+            return redirect('/projects')
+        except Exception as e:
+            return render_template('error.html', title='Ошибка', error=e)
+    return render_template('create_project.html', title='Создание проекта')
 
 
 @app.route('/profile/<int:user_id>')
@@ -109,7 +135,6 @@ def edit_profile():
             db.session.refresh(user)
             return redirect('/profile')
         except Exception as e:
-            db.session.rollback()
             return render_template('error.html', title='Ошибка', error=e)
     return render_template('edit_profile.html', title='Редактирование профиля', user=current_user)
 

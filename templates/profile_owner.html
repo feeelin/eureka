@@ -1,7 +1,7 @@
 {%extends 'base.html'%}
 
 {%block body%}
-<a href="/profile/edit">Редактировать</a>
+<a href="/profile/edit" class="btn btn-success">Редактировать</a>
 <h1>{{user.nick}}</h1>
 {% if user.name %}
     {% if user.second_name %}

@@ -1,41 +1,31 @@
-
-header {
-
-}
-
 nav a {
     text-decoration: none;
    }
    
    nav ul {
-    margin: 0;
-    padding: 0;
     text-align: center;
    }
    
    nav li {
-    list-style-position: center;
-    font: 24px 'Oswald', sans-serif;
-    padding: 10px;
+    font-size: 24px;
+
    }
    
    .top-menu li {
     display: inline-block;
     padding: 5px 10px;
-    margin: 0;
-    
    }
    
    .top-menu li.active {
     background: #b2b2b2;
-    color: #fff;
+
    }
    
    .top-menu a {
-    color: #b2b2b2;
+   color: black;
    }
    #one {
-	background-color: #ffffff;
+	background-color: ;
    }
    .logo {
     position: absolute;
@@ -53,7 +43,6 @@ nav a {
 
 .a-menu {
 	color: #ffffff;
-	font-family: 'PT Sans', sans-serif;
 	font-weight: 400;
 	font-size: 14px;
 	text-transform: uppercase;
@@ -84,34 +73,9 @@ nav a {
 .project{
     text-align: center;
     padding: 0%;
-    background-color: #b2b2b2;
 }
 .name {
-	font: 14px 'Oswald', sans-serif;
+	font-size: 14px;
 	color: #ff0000;
-	
-	
-}
-.p{
-    background-color: #f70303;
-}
-.text {
-	
-    font: 14px 'Oswald', sans-serif;
-
-}
-.photo{
-    border: 10px solid #f70303;
 }
 
-.wrapper {
-    text-align: center;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 16px;
-    padding-right: 16px;
-    background-color: #b2b2b2;
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
