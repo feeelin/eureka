@@ -10,10 +10,9 @@
 <input type="password" name="password" id="password" placeholder="Введите пароль" class="form-control"><br>
 <label for="main_language" class='form-label'>Выберите ваш основной язык</label>
 <select class="form-select" name="main_language" id="main_language">
-<option value="Python">Python</option>
-<option value="PHP">PHP</option>
-<option value="Java">Java</option>
-<option value="GO">GO</option>
+{% for language in languages %}
+<option value="{{language}}">{{language}}</option>
+{% endfor %}
 </select><br>
 <label for="level" class='form-label'>Выберите ваш уровень</label>
 <select class="form-select" name="level" id="level">

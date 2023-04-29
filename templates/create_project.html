@@ -29,10 +29,9 @@
 <p>
 <label class='form-label' for="back_language">Язык сервера</label>
 <select class='form-select' name="back_language" id="back_language">
-<option value="Python">Python</option>
-<option value="PHP">PHP</option>
-<option value="Java">Java</option>
-<option value="GO">GO</option>
+{% for language in languages %}
+<option value="{{language}}">{{language}}</option>
+{% endfor %}
 </select>
 </p>
 <label class='form-label' for="level">Уровень разработчиков</label>

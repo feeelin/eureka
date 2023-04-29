@@ -10,10 +10,21 @@ app.config['SECRET_KEY'] = 'serg'
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
+# массив languages нужен для заполнения данных в некоторых формах, например, в registry
+
+languages = ['Python', 'Java', 'C', 'C++', 'C#', 'JavaScript', 'PHP',
+             'GO', 'Assembly', 'Swift', 'Kotlin', 'Ruby', 'Rust']
+
+# load_user подгружает в сессию информацию о залогиненом пользователе
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+# класс User является моделью для таблицы User в базе данных проекта и описывает форматы данных
+# метод is_authenticated помогает функции load_user ориентироваться в состояниях пользователя
 
 
 class User(UserMixin, db.Model):
@@ -35,6 +46,9 @@ class User(UserMixin, db.Model):
         return True
 
 
+# класс Project является моделью для таблицы Project в базе данных проекта и описывает форматы данных
+
+
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(20), nullable=False)
@@ -50,6 +64,10 @@ class Project(db.Model):
         return self.title
 
 
+# класс Matches является моделью для таблицы Matches в базе данных проекта и описывает форматы данных
+# является связующей между двумя другими моделями
+
+
 class Matches(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
@@ -60,9 +78,16 @@ class Matches(db.Model):
         return f'{self.user_id} user + {self.project_id} = {self.is_approved}'
 
 
+# функция main отслеживает url '/' и при запросе возвращает HTML-страницу, подставляя в блок title название
+
+
 @app.route('/')
 def main():
     return render_template('main.html', title='Главная страница')
+
+
+# функция search отслеживает url '/search' и при запросе формирует все подходящие для пользователя проекты, подставляя
+# их в HTML-документ. Работает только для авторизованных пользователей
 
 
 @app.route('/search')
@@ -72,6 +97,10 @@ def search():
     return render_template('search.html', title='Поиск', projects=projects)
 
 
+# функция projects отслеживает url '/projects' и при запросе формирует все проекты пользователя, подставляя
+# их в HTML-документ
+
+
 @app.route('/projects')
 @login_required
 def projects():
@@ -79,11 +108,18 @@ def projects():
     return render_template('projects.html', title='Ваши проекты', projects=projects)
 
 
+# функция project_profile достаёт из БД данные о проекте по его id и формирует HTML-документ с этими данными
+# также достаёт данные о том, оставлял ли пользователь отзыв на этот проект
+
+
 @app.route('/projects/<int:id>')
 def project_profile(id):
     project = db.session.query(Project).filter_by(id=id).first()
     like = db.session.query(Matches).filter_by(user_id=current_user.id, project_id=id).first()
     return render_template('project_profile.html', title=project.title, project=project, user=current_user, like=like)
+
+
+# функция project_edit достаёт из БД данные о проекте по его id и формирует форму для обновления данных
 
 
 @app.route('/projects/<int:id>/edit', methods=['POST', 'GET'])
@@ -109,8 +145,12 @@ def project_edit(id):
                 return redirect(f'/projects/{project.id}')
             except Exception as e:
                 return render_template('error.html', title='Ошибка', error='Не удалось обновить проект')
-        return render_template('edit_project.html', title=project.title, project=project)
+        return render_template('edit_project.html', title=project.title, project=project, languages=languages)
     return redirect('/')
+
+
+# функция create_project создаёт форму для объявления нового объекта в БД и в случае корректного заполнения сохраняет
+# её данные в таблицу Projects
 
 
 @app.route('/projects/create', methods=['GET', 'POST'])
@@ -135,7 +175,11 @@ def create_project():
             return redirect('/projects')
         except Exception as e:
             return render_template('error.html', title='Ошибка', error='Не удалось создать проект')
-    return render_template('create_project.html', title='Создание проекта')
+    return render_template('create_project.html', title='Создание проекта', languages=languages)
+
+
+# функция delete_project берёт данные об объекте в БД и запускает процесс его удаления. Доступна только автору
+# удаляемного проекта
 
 
 @app.route('/projects/<int:project_id>/delete')
@@ -152,15 +196,25 @@ def delete_project(project_id):
     return redirect('/')
 
 
+# функция profile выводит профиль пользователя по его уникальному идентификатору
+
+
 @app.route('/profile/<int:user_id>')
 def profile(user_id):
     return render_template('profile.html', title='Профиль', user=User.query.get(user_id))
+
+
+# функция profile_owner открывает профиль пользователя для самого пользователя с возможностью выхода из аккаунта и
+# редактирования данных
 
 
 @app.route('/profile')
 @login_required
 def profile_owner():
     return render_template('profile_owner.html', title='Профиль', user=current_user)
+
+
+# функция profile edit загружает форму для редактирования данных профиля пользователя
 
 
 @app.route('/profile/edit', methods=['GET', 'POST'])
@@ -187,7 +241,10 @@ def edit_profile():
             return redirect('/profile')
         except Exception as e:
             return render_template('error.html', title='Ошибка', error=e)
-    return render_template('edit_profile.html', title='Редактирование профиля', user=current_user)
+    return render_template('edit_profile.html', title='Редактирование профиля', user=current_user, languages=languages)
+
+
+# функция сверяет отклики пользователя и ответы проджект-файндера, обновляя страницу с Эвриками!
 
 
 @app.route('/matches')
@@ -216,6 +273,10 @@ def matches():
     return render_template('matches.html', title='Эврики!', user=people, projects=projects)
 
 
+# функция like занимается отправлением отзыва в базу данных, после чего возвращает пользователя обратно на страницу
+# проекта
+
+
 @app.route('/projects/<int:project_id>/like/<int:user_id>')
 def like(project_id, user_id):
     match = Matches(user_id=user_id, project_id=project_id)
@@ -227,6 +288,10 @@ def like(project_id, user_id):
         return render_template('error.html', title='Ошибка', error='Не удалось отправить отклик')
 
 
+# метод delete_match удаляет из БД запрос пользователя на участие в проекте, если проджект-фаундер не примет его
+# заявку
+
+
 @app.route('/matches/<int:user_id>/<int:project_id>/delete')
 def delete_match(user_id, project_id):
     match = db.session.query(Matches).filter_by(user_id=user_id, project_id=project_id).first()
@@ -236,6 +301,10 @@ def delete_match(user_id, project_id):
         return redirect('/matches')
     except:
         return render_template('error.html', title='Ошибка', error='Не удалось удалить')
+
+
+# функция approve_login прямо противоположна предыдущей и наоборот занимается подтверждением заявки со стороны
+# фаундера
 
 
 @app.route('/matches/<int:user_id>/<int:project_id>/eureka')
@@ -251,6 +320,9 @@ def approve_login(user_id, project_id):
             return redirect('/matches')
         except:
             return render_template('error.html', title='Ошибка', error='Не удалось подтвердить Эврику')
+
+
+# форма для регистрации пользователя и занесения данных в таблицу User ДБ
 
 
 @app.route('/registration', methods=['GET', 'POST'])
@@ -278,7 +350,10 @@ def registration():
                 return render_template('error.html', title='Ошибка', error=e)
         else:
             return render_template('error.html', title='Ошибка', error='Пользователь с такими данными уже зарегистрирован')
-    return render_template('registration.html', title='Регистрация')
+    return render_template('registration.html', title='Регистрация', languages=languages)
+
+
+# login осуществляет авторизацю пользователя на сайте
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -290,16 +365,22 @@ def login():
         if user:
             if check_password_hash(user.password, request.form['password']):
                 login_user(user)
-                print(user)
                 return redirect('/profile')
         return render_template('error.html', title='Ошибка', error='Введённые данные недействительны')
     return render_template('login.html', title='Авторизация')
+
+
+# функция logout используется для переадресации из профиля пользователя и дальнейшей деаутентификации
 
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect('/')
+
+
+# Последние два метода необходимы для более комфортного отображения ошибок на сайте
+# конкретнее для ошибок 401 и 404
 
 
 @app.errorhandler(401)
