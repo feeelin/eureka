@@ -16,12 +16,6 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-# Модели для базы данных
-# User - таблица пользователей
-# Project - таблица проектов
-# Matches - таблица совпадений
-
-
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nick = db.Column(db.String(16), nullable=False)
@@ -50,6 +44,7 @@ class Project(db.Model):
     back_language = db.Column(db.String, nullable=False)
     level = db.Column(db.String, nullable=False)
     founder_id = db.Column(db.Integer, nullable=False)
+    intro = db.Column(db.String(240))
 
     def __repr__(self):
         return self.title
@@ -65,12 +60,16 @@ class Matches(db.Model):
         return f'{self.user_id} user + {self.project_id} = {self.is_approved}'
 
 
-# Функции отслеживания страниц
-
-
 @app.route('/')
 def main():
     return render_template('main.html', title='Главная страница')
+
+
+@app.route('/search')
+@login_required
+def search():
+    projects = db.session.query(Project).filter_by(back_language=current_user.main_language).all()
+    return render_template('search.html', title='Поиск', projects=projects)
 
 
 @app.route('/projects')
@@ -90,24 +89,28 @@ def project_profile(id):
 @app.route('/projects/<int:id>/edit', methods=['POST', 'GET'])
 def project_edit(id):
     project = db.session.query(Project).filter_by(id=id).first()
-    if request.method == 'POST':
-        project.title = request.form['title']
-        if request.form['about']:
-            project.about = request.form['about']
-        if request.form['img']:
-            project.image = request.form['img']
-        project.front_language = request.form['front_language']
-        project.back_language = request.form['back_language']
-        project.level = request.form['level']
+    if project.founder_id == current_user.id:
+        if request.method == 'POST':
+            project.title = request.form['title']
+            if request.form['about']:
+                project.about = request.form['about']
+            if request.form['img']:
+                project.image = request.form['img']
+            if request.form['intro']:
+                project.intro = request.form['intro']
+            project.front_language = request.form['front_language']
+            project.back_language = request.form['back_language']
+            project.level = request.form['level']
 
-        try:
-            db.session.add(project)
-            db.session.commit()
-            db.session.refresh(project)
-            return redirect(f'/projects/{project.id}')
-        except Exception as e:
-            return render_template('error.html', title='Ошибка', error='Не удалось обновить проект')
-    return render_template('edit_project.html', title=project.title, project=project)
+            try:
+                db.session.add(project)
+                db.session.commit()
+                db.session.refresh(project)
+                return redirect(f'/projects/{project.id}')
+            except Exception as e:
+                return render_template('error.html', title='Ошибка', error='Не удалось обновить проект')
+        return render_template('edit_project.html', title=project.title, project=project)
+    return redirect('/')
 
 
 @app.route('/projects/create', methods=['GET', 'POST'])
@@ -120,10 +123,11 @@ def create_project():
         front_language = int(request.form['front_language'])
         back_language = request.form['back_language']
         level = request.form['level']
+        intro = request.form['intro']
         founder_id = int(current_user.id)
 
         project = Project(title=title, image=img, about=about, front_language=front_language,
-                          back_language=back_language, founder_id=founder_id, level=level)
+                          back_language=back_language, founder_id=founder_id, level=level, intro=intro)
 
         try:
             db.session.add(project)
@@ -145,6 +149,7 @@ def delete_project(project_id):
             return redirect('/projects')
         except:
             return render_template('error.html', title='Ошибка', error='Удаление проекта не удалось')
+    return redirect('/')
 
 
 @app.route('/profile/<int:user_id>')

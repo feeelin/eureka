@@ -2,6 +2,7 @@
 
 {% block body %}
 <h1>Ваши эврики</h1>
+{% if projects %}
 <div class="py-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 {% for el in projects %}
 <div class="col">
@@ -16,7 +17,11 @@
       </div>
 {% endfor %}
 </div>
+{% else %}
+<p>Здесь пока что пусто</p>
+{% endif %}
 <h1>Кандидаты в ваши проекты</h1>
+{% if user %}
 <div class="py-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 {% for el in user %}
 <div class="col">
@@ -33,4 +38,7 @@
       </div>
 {% endfor %}
 </div>
+{% else %}
+<p>Здесь пока что пусто</p>
+{%endif%}
 {% endblock %}

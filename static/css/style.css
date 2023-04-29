@@ -115,3 +115,7 @@ a:hover{
   margin-left: auto;
  margin-right: 0px;
 }
+
+.proj_search_open{
+  text-align: right;
+}

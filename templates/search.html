@@ -1,0 +1,18 @@
+{%extends 'base.html'%}
+
+{%block body%}
+<h1 class='py-3'>Поиск проектов</h1>
+{% for el in projects %}
+<div class="col">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="card-text" style='text-align: left'>{{el.title}}</h3>
+            <p>{{el.intro}}</p>
+            <div class="proj_search_open">
+                <a href='/projects/{{el.id}}' class="btn btn-success" style='margin-right: 5px'>Open</a>
+            </div>
+          </div>
+        </div>
+      </div>
+{%endfor%}
+{%endblock%}
