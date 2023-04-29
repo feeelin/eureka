@@ -1,5 +1,36 @@
 {% extends 'base.html' %}
 
 {% block body %}
-Ваши Эврики!
+<h1>Ваши эврики</h1>
+<div class="py-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+{% for el in projects %}
+<div class="col">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="card-text" style='text-align: center'>{{el}}</h3>
+            <div class="d-flex justify-content-center align-items-center">
+                <p>Эврика!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endfor %}
+</div>
+<h1>Кандидаты в ваши проекты</h1>
+<div class="py-3 row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+{% for el in user %}
+<div class="col">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="card-text" style='text-align: center'>{{el[0].nick}}</h3>
+            <div class="d-flex justify-content-center align-items-center">
+                <a href='/matches/{{el[0].id}}/{{el[1].id}}/delete' class="btn btn-danger" style='margin-right: 5px'>Удалить</a>
+                <a href='/profile/{{el[0].id}}' class="btn btn-warning" style="margin-right:5px">Профиль</a>
+                <a href='/matches/{{el[0].id}}/{{el[1].id}}/eureka' class="btn btn-success" style='margin-right: 5px'>Эврика!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endfor %}
+</div>
 {% endblock %}

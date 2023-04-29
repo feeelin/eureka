@@ -186,8 +186,29 @@ def edit_profile():
 
 
 @app.route('/matches')
+@login_required
 def matches():
-    return render_template('matches.html', title='Ваши Эврики!')
+    projects = db.session.query(Project).filter_by(founder_id=current_user.id).all()
+    matched_users = []
+
+    for proj in projects:
+        for j in db.session.query(Matches).filter_by(project_id=proj.id).all():
+            matched_users.append((j.user_id, j.project_id))
+
+    people = []
+    for match in matched_users:
+        people.append([db.session.query(User).filter_by(id=match[0]).first(),
+                       db.session.query(Project).filter_by(id=match[1]).first()])
+
+    matches = db.session.query(Matches).filter_by(user_id=current_user.id, is_approved=1).all()
+    print(matches)
+    projects = []
+
+    for i in matches:
+        project = db.session.query(Project).filter_by(id=i.project_id).first()
+        projects.append(project.title)
+
+    return render_template('matches.html', title='Эврики!', user=people, projects=projects)
 
 
 @app.route('/projects/<int:project_id>/like/<int:user_id>')
@@ -199,6 +220,32 @@ def like(project_id, user_id):
         return redirect(f'/projects/{project_id}')
     except:
         return render_template('error.html', title='Ошибка', error='Не удалось отправить отклик')
+
+
+@app.route('/matches/<int:user_id>/<int:project_id>/delete')
+def delete_match(user_id, project_id):
+    match = db.session.query(Matches).filter_by(user_id=user_id, project_id=project_id).first()
+    try:
+        db.session.delete(match)
+        db.session.commit()
+        return redirect('/matches')
+    except:
+        return render_template('error.html', title='Ошибка', error='Не удалось удалить')
+
+
+@app.route('/matches/<int:user_id>/<int:project_id>/eureka')
+@login_required
+def approve_login(user_id, project_id):
+    project = db.session.query(Project).filter_by(founder_id=current_user.id).first()
+    if project.founder_id == current_user.id:
+        match = db.session.query(Matches).filter_by(user_id=user_id, project_id=project_id).first()
+        try:
+            match.is_approved = 1
+            db.session.add(match)
+            db.session.commit()
+            return redirect('/matches')
+        except:
+            return render_template('error.html', title='Ошибка', error='Не удалось подтвердить Эврику')
 
 
 @app.route('/registration', methods=['GET', 'POST'])
