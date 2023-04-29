@@ -80,6 +80,36 @@ def projects():
     return render_template('projects.html', title='Ваши проекты', projects=projects)
 
 
+@app.route('/projects/<int:id>')
+def project_profile(id):
+    project = db.session.query(Project).filter_by(id=id).first()
+    like = db.session.query(Matches).filter_by(user_id=current_user.id, project_id=id).first()
+    return render_template('project_profile.html', title=project.title, project=project, user=current_user, like=like)
+
+
+@app.route('/projects/<int:id>/edit', methods=['POST', 'GET'])
+def project_edit(id):
+    project = db.session.query(Project).filter_by(id=id).first()
+    if request.method == 'POST':
+        project.title = request.form['title']
+        if request.form['about']:
+            project.about = request.form['about']
+        if request.form['img']:
+            project.image = request.form['img']
+        project.front_language = request.form['front_language']
+        project.back_language = request.form['back_language']
+        project.level = request.form['level']
+
+        try:
+            db.session.add(project)
+            db.session.commit()
+            db.session.refresh(project)
+            return redirect(f'/projects/{project.id}')
+        except Exception as e:
+            return render_template('error.html', title='Ошибка', error='Не удалось обновить проект')
+    return render_template('edit_project.html', title=project.title, project=project)
+
+
 @app.route('/projects/create', methods=['GET', 'POST'])
 @login_required
 def create_project():
@@ -102,6 +132,19 @@ def create_project():
         except Exception as e:
             return render_template('error.html', title='Ошибка', error='Не удалось создать проект')
     return render_template('create_project.html', title='Создание проекта')
+
+
+@app.route('/projects/<int:project_id>/delete')
+@login_required
+def delete_project(project_id):
+    project = project = db.session.query(Project).filter_by(id=project_id).first()
+    if current_user.id == project.founder_id:
+        try:
+            db.session.delete(project)
+            db.session.commit()
+            return redirect('/projects')
+        except:
+            return render_template('error.html', title='Ошибка', error='Удаление проекта не удалось')
 
 
 @app.route('/profile/<int:user_id>')

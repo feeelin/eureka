@@ -63,6 +63,7 @@ a:hover{
 .main_content {
   margin-top: 50px;
   display: flex;
+  margin-bottom: 100px;
 }
 
 .left_main_arch{
@@ -71,25 +72,46 @@ a:hover{
   border-radius: 10px;
 }
 
-.right_main_text{
+.first_main_text{
   font-size: 24px;
   max-width: 50%;
-  margin-right: auto;
+  margin-right: 0;
+  margin-left: auto;
+  text-align: justify;
 }
 
 .bg_main_photo{
-  margin-top: 50px;
-  width: 1250px;
+  max-width: 100%
 }
 
-.right_main_arch{
+.first_arch{
   margin-left: 0px;
   margin-right: auto;
-  border-radius: 10px;
+  max-width: 50%;
 }
 
 .left_main_text{
   font-size: 24px;
   max-width: 50%;
   margin-left: auto;
+}
+
+.eureca_text{
+  text-align: center;
+  font-size: 20px;
+}
+
+.eureca_container{
+  margin-bottom: 100px;
+}
+
+.second_arch_container{
+  display: flex
+}
+
+
+.second_arch{
+  width: 150px;
+  margin-left: auto;
+ margin-right: 0px;
 }

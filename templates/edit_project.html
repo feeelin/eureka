@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1 class="py-3">Редактор проекта</h1>
+<form method="POST">
+    <p>
+        <label class='form-label' for="title">Название проекта</label>
+        <input class='form-control' type="text" name="title" id="title" placeholder="Введите название" value='{{project.title}}'>
+    </p>
+    <p>
+        <label class='form-label' for="img">Ссылка на изображение</label>
+       <input class='form-control' type="text" name="img" id="img" placeholder="Введите ссылку на изображение" value='{%if project.image%}{{project.image}}{%endif%}'>
+    </p>
+    <p>
+        <label class='form-label' for="about">О проекте</label>
+        <textarea class='form-control' name="about" id="about" cols="30" rows="10" placeholder="Расскажите о проекте">{%if project.about%}{{project.about}}{%endif%}</textarea>
+    </p>
+   <p>
+       <label class='form-label' for="front_language">Нужен ли Frontend?</label>
+      <select class='form-select' name="front_language" id="front_language">
+        <option value="1">Да</option>
+        <option value="0">Нет</option>
+    </select>
+   </p>
+    <p>
+        <label class='form-label' for="back_language">Язык сервера</label>
+      <select class='form-select' name="back_language" id="back_language">
+        <option value="Python">Python</option>
+        <option value="PHP">PHP</option>
+        <option value="Java">Java</option>
+        <option value="GO">GO</option>
+    </select>
+    </p>
+    <label class='form-label' for="level">Уровень разработчиков</label>
+     <select class='form-select' name="level" id="level">
+        <option value="Intern">Intern</option>
+        <option value="Junior">Junior</option>
+        <option value="Middle">Middle</option>
+        <option value="Senior">Senior</option>
+    </select><br>
+    <button type="submit" class="btn btn-success">Сохранить</button>
+</form>
+{% endblock %}
