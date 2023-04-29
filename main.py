@@ -190,6 +190,17 @@ def matches():
     return render_template('matches.html', title='Ваши Эврики!')
 
 
+@app.route('/projects/<int:project_id>/like/<int:user_id>')
+def like(project_id, user_id):
+    match = Matches(user_id=user_id, project_id=project_id)
+    try:
+        db.session.add(match)
+        db.session.commit()
+        return redirect(f'/projects/{project_id}')
+    except:
+        return render_template('error.html', title='Ошибка', error='Не удалось отправить отклик')
+
+
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
     if request.method == 'POST':
@@ -247,11 +258,6 @@ def custom_401(error):
 @app.errorhandler(404)
 def custom_404(error):
     return render_template('404.html', title='Хмммм...')
-
-
-@app.route('/error')
-def error():
-    return render_template('error.html', title='Ошибка', error='Причина ошибки')
 
 
 if __name__ == '__main__':
