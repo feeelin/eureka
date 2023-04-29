@@ -48,3 +48,48 @@ a:hover{
 .reg_img{
   width:600px;
 }
+/*
+#preloader {
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:5;
+  width:100%;
+  height:100%;
+  overflow:visible;
+  background: #fff url('../images/preloader.gif') no-repeat center center;
+}*/
+
+.main_content {
+  margin-top: 50px;
+  display: flex;
+}
+
+.left_main_arch{
+  margin-right: 0px;
+  margin-left: auto;
+  border-radius: 10px;
+}
+
+.right_main_text{
+  font-size: 24px;
+  max-width: 50%;
+  margin-right: auto;
+}
+
+.bg_main_photo{
+  margin-top: 50px;
+  width: 1250px;
+}
+
+.right_main_arch{
+  margin-left: 0px;
+  margin-right: auto;
+  border-radius: 10px;
+}
+
+.left_main_text{
+  font-size: 24px;
+  max-width: 50%;
+  margin-left: auto;
+}
