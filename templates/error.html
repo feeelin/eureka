@@ -1,6 +1,11 @@
 {%extends 'base.html'%}
 
 {% block body %}
-<a href="/">Ошибка</a>
-{{error}}
+<div class='profile_container'>
+  <img src="/static/images/2.png" alt="angry" style='width:300px; margin-right: auto'>
+  <div style='margin-left: auto'>
+    <h1 class='py-3' style='text-align:right;'>Ошибка</h1>
+    <p style='text-align:right'>{{error}}</p>
+  </div>
+</div>
 {% endblock %}

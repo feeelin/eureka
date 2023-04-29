@@ -33,7 +33,7 @@
     </select></p>
 
     <label for="img" class="form-label">Ссылка на фото профиля</label>
-    <input  class="form-control" type="text" name="img" id="img" placeholder="Введите ссылку"><br>
+    <input  class="form-control" type="text" name="img" id="img" placeholder="Введите ссылку" value="{% if user.img %}{{user.img}}{% endif %}"><br>
 
     <button type="submit" class="btn btn-success">Сохранить</button>
 </form>

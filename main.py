@@ -77,7 +77,7 @@ def main():
 @login_required
 def projects():
     projects = db.session.query(Project).filter_by(founder_id=current_user.id).all()
-    return render_template('projects.html', title='Ваши проекты')
+    return render_template('projects.html', title='Ваши проекты', projects=projects)
 
 
 @app.route('/projects/create', methods=['GET', 'POST'])
@@ -100,7 +100,7 @@ def create_project():
             db.session.commit()
             return redirect('/projects')
         except Exception as e:
-            return render_template('error.html', title='Ошибка', error=e)
+            return render_template('error.html', title='Ошибка', error='Не удалось создать проект')
     return render_template('create_project.html', title='Создание проекта')
 
 
@@ -171,7 +171,7 @@ def registration():
             except Exception as e:
                 return render_template('error.html', title='Ошибка', error=e)
         else:
-            return render_template('error.html', title='Ошибка', error='Already registered')
+            return render_template('error.html', title='Ошибка', error='Пользователь с такими данными уже зарегистрирован')
     return render_template('registration.html', title='Регистрация')
 
 
@@ -186,7 +186,7 @@ def login():
                 login_user(user)
                 print(user)
                 return redirect('/profile')
-        return redirect('/login')
+        return render_template('error.html', title='Ошибка', error='Введённые данные недействительны')
     return render_template('login.html', title='Авторизация')
 
 
@@ -204,6 +204,11 @@ def custom_401(error):
 @app.errorhandler(404)
 def custom_404(error):
     return render_template('404.html', title='Хмммм...')
+
+
+@app.route('/error')
+def error():
+    return render_template('error.html', title='Ошибка', error='Причина ошибки')
 
 
 if __name__ == '__main__':
