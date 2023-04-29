@@ -1,17 +1,28 @@
 {%extends 'base.html'%}
 
 {%block body%}
-<a href="/profile/edit" class="btn btn-success">Редактировать</a>
-<h1>{{user.nick}}</h1>
-{% if user.name %}
-    {% if user.second_name %}
-        <h4>{{user.name}} {{user.second_name}}</h4>
-    {% else %}
-        <h4>{{user.name}}</h4>
+<div class="profile_container">
+  <div class="profile_text">
+    <a href="/profile/edit" class="btn btn-success">Редактировать</a>
+    <h1 class="py-3">{{user.nick}}</h1>
+    {% if user.name %}
+        {% if user.second_name %}
+            <h4>{{user.name}} {{user.second_name}}</h4>
+        {% else %}
+            <h4>{{user.name}}</h4>
+        {% endif %}
     {% endif %}
-{% endif %}
-<p> {{user.level}} {{user.main_language}} Developer</p>
-{% if user.about %}
-    <p>{{user.about}}</p>
-{% endif %}
+    <p> {{user.level}} {{user.main_language}} Developer</p>
+    {% if user.about %}
+        <p style="text-align: justify">{{user.about}}</p>
+    {% endif %}
+  </div>
+  <div>
+    {%if user.img%}
+    <img class='profile_image' src="{{user.img}}">
+    {%endif%}
+  </div>
+</div>
+
+
 {%endblock%}

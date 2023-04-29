@@ -32,6 +32,7 @@ class User(UserMixin, db.Model):
     level = db.Column(db.String, nullable=False)
     main_language = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
+    img = db.Column(db.String)
 
     def __repr__(self):
         return self.nick
@@ -126,6 +127,8 @@ def edit_profile():
             user.second_name = request.form['second_name']
         if request.form['about']:
             user.about = request.form['about']
+        if request.form['img']:
+            user.img = request.form['img']
         user.main_language = request.form['main_language']
         user.level = request.form['level']
 

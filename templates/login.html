@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<h1>Авторизация</h1>
+<h1 class="py-3">Авторизация</h1>
 <form method="POST">
-    <input type="text" name="nick" id="nick" placeholder="Введите логин"><br>
-    <input type="password" name="password" id="password" placeholder="Введите пароль"><br>
-    <button type="submit">Войти</button>
-    <p>Нет аккаунта? <a href="/registration">Зарегистрируйся!</a></p>
+    <input type="text" name="nick" id="nick" placeholder="Введите логин" class="form-control"><br>
+    <input type="password" name="password" id="password" placeholder="Введите пароль" class="form-control"><br>
+    <button type="submit" class="btn btn-success">Войти</button>
+    <p style='margin-top: 10px;'>Нет аккаунта? <a href="/registration">Зарегистрируйся!</a></p>
 </form>
 {% endblock %}
