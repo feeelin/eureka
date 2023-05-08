@@ -385,6 +385,12 @@ def login():
             if check_password_hash(user.password, request.form['password']):
                 login_user(user)
                 return redirect('/profile')
+        else:
+            user = User.query.filter_by(email=request.form['nick']).first()
+            if user:
+                if check_password_hash(user.password, request.form['password']):
+                    login_user(user)
+                    return redirect('/profile')
         return render_template('error.html', title='Ошибка', error='Введённые данные недействительны')
     return render_template('login.html', title='Авторизация')
 
@@ -417,9 +423,10 @@ def custom_404(error):
 
 @app.route('/profile/stats', methods=['POST', 'GET'])
 def stats():
-    if request.method == 'POST':
+    stat = db.session.query(Achievements).filter_by(user_id=current_user.id).first()
+    print(stat)
 
-        stat = db.session.query(Achievements).filter_by(user_id=current_user.id).first()
+    if request.method == 'POST':
 
         if stat:
             stat.coffee = request.form['coffee']
@@ -441,8 +448,8 @@ def stats():
             print(e)
             return render_template('error.html', title='Ошибка', error='Не удалось обновить статистику')
 
-    return render_template('make_stats.html', title='Добавление статистики')
+    return render_template('make_stats.html', title='Добавление статистики', stats=stat)
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

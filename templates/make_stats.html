@@ -4,15 +4,15 @@
 <form method="POST">
 <p>
 <label class='form-label' for="coffee">Кружек кофе на работе выпито:</label>
-<input class='form-control' type="number" name="coffee" id="coffee">
+<input class='form-control' type="number" name="coffee" id="coffee" value="{{stats.coffee}}">
 </p>
 <p>
 <label class='form-label' for="production_lost">Продакшнов уронено: </label>
-<input class='form-control' type="number" name="production_lost" id="production_lost">
+<input class='form-control' type="number" name="production_lost" id="production_lost" value="{{stats.production_lost}}">
 </p>
 <p>
 <label class='form-label' for="teamlead_shouts">Ссор с тимлидом: </label>
-<input class='form-control' type="number" name="teamlead_shouts" id="teamlead_shouts">
+<input class='form-control' type="number" name="teamlead_shouts" id="teamlead_shouts" value="{{stats.teamlead_shouts}}">
 </p>
 <button type="submit" class="btn btn-success">Сохранить</button>
 </form>
