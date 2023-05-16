@@ -108,7 +108,13 @@ def main():
 @login_required
 def search():
     projects = db.session.query(Project).filter_by(back_language=current_user.main_language).all()
-    return render_template('search.html', title='Поиск', projects=projects)
+    id = [i.founder_id for i in projects]
+
+    founders = []
+    for i in id:
+        founders.append(db.session.query(User).filter_by(id=i).first())
+
+    return render_template('search.html', title='Поиск', projects=projects, founders=founders)
 
 
 # функция projects отслеживает url '/projects' и при запросе формирует все проекты пользователя, подставляя

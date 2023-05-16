@@ -108,3 +108,7 @@ a:hover{
 .proj_search_open{
   text-align: right;
 }
+
+.card-title{
+    display: flex;
+}
