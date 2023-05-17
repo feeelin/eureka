@@ -108,13 +108,19 @@ def main():
 @login_required
 def search():
     projects = db.session.query(Project).filter_by(back_language=current_user.main_language).all()
+
+    if current_user.main_language == 'JavaScript':
+        frontend = db.session.query(Project).filter_by(front_language=1).all()
+        for project in frontend:
+            projects.append(project)
+
     id = [i.founder_id for i in projects]
 
     founders = []
     for i in id:
         founders.append(db.session.query(User).filter_by(id=i).first())
 
-    return render_template('search.html', title='Поиск', projects=projects, founders=founders)
+    return render_template('search.html', title='Поиск', projects=projects, founders=founders, current_user=current_user, ids=id)
 
 
 # функция projects отслеживает url '/projects' и при запросе формирует все проекты пользователя, подставляя

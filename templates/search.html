@@ -2,20 +2,38 @@
 
 {%block body%}
 <h1 class='py-3'>Поиск проектов</h1>
+{% if projects %}
 {% for el in projects %}
+{% if el.founder_id != current_user.id %}
 <div class="col">
 <div class="card shadow-sm" style="margin-bottom: 10px">
-<div class="card-body">
-    <div class="card-title">
-        <h3 class="card-text" style='text-align: left'>{{el.title}}</h3>
-        <p style="margin-left: 20px; font-size: 20px; margin-top:auto; margin-bottom: auto">от {{ founders[projects.index(el)] }}</p>
-    </div>
+<div class="card-body" style='display: flex'>
+<div class="card-text">
+<div class="card-title">
+<h3 class="card-text" style='text-align: left'>{{el.title}}</h3>
+<p style="margin-left: 20px; font-size: 20px; margin-top:auto;
+margin-bottom: auto">от <a href="profile/{{ids[projects.index(el)]}}" style='text-decoration: none'>{{ founders[projects.index(el)] }}</a></p>
+</div>
 <p>{{el.intro}}</p>
+<ul style='display: flex'>
+  <li>{{el.back_language}}</li>
+  {% if el.front_language %}<li style='margin-left: 30px'>Frontend</li>{% endif %}
+  {%if el.level == current_user.level%}
+  <li style='margin-left: 30px; color: green'>{{ el.level }}</li>
+  {% else %}
+  <li style='margin-left: 30px; color: red'>{{ el.level }}</li>
+  {%endif%}
+</ul>
+</div>
 <div class="proj_search_open">
-<a href='/projects/{{el.id}}' class="btn btn-success" style='margin-right: 5px'>Open</a>
+<a href='/projects/{{el.id}}' class="btn btn-success" style='margin-right: 5px'>Открыть проект</a>
 </div>
 </div>
 </div>
 </div>
+{% endif %}
 {%endfor%}
+{% else %}
+<p>Здесь удивительно пусто</p>
+{% endif %}
 {%endblock%}
