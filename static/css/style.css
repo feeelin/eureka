@@ -106,7 +106,18 @@ a:hover{
 }
 
 .proj_search_open{
-  text-align: right;
+  margin-right: 20px;
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.proj_card{
+    display: flex;
+}
+
+.card-body-content{
+    max-width: 70%;
 }
 
 .card-title{

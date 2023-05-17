@@ -378,7 +378,7 @@ def registration():
     return render_template('registration.html', title='Регистрация', languages=languages)
 
 
-# login осуществляет авторизацю пользователя на сайте
+# login осуществляет авторизацию пользователя на сайте
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -429,15 +429,15 @@ def custom_404(error):
 
 @app.route('/profile/stats', methods=['POST', 'GET'])
 def stats():
-    stat = db.session.query(Achievements).filter_by(user_id=current_user.id).first()
-    print(stat)
+    stats = db.session.query(Achievements).filter_by(user_id=current_user.id).first()
+    print(stats)
 
     if request.method == 'POST':
 
-        if stat:
-            stat.coffee = request.form['coffee']
-            stat.production_lost = request.form['production_lost']
-            stat.teamlead_shouts = request.form['teamlead_shouts']
+        if stats:
+            stats.coffee = request.form['coffee']
+            stats.production_lost = request.form['production_lost']
+            stats.teamlead_shouts = request.form['teamlead_shouts']
 
         else:
             coffee = request.form['coffee']
@@ -447,14 +447,14 @@ def stats():
                                  teamlead_shouts=teamlead_shouts)
 
         try:
-            db.session.add(stat)
+            db.session.add(stats)
             db.session.commit()
             return redirect('/profile')
         except Exception as e:
             print(e)
             return render_template('error.html', title='Ошибка', error='Не удалось обновить статистику')
 
-    return render_template('make_stats.html', title='Добавление статистики', stats=stat)
+    return render_template('make_stats.html', title='Добавление статистики', stats=stats)
 
 
 if __name__ == '__main__':
