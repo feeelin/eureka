@@ -280,10 +280,12 @@ def edit_profile():
 def matches():
     projects = db.session.query(Project).filter_by(founder_id=current_user.id).all()
     matched_users = []
+    is_matched = []
 
     for proj in projects:
         for j in db.session.query(Matches).filter_by(project_id=proj.id).all():
             matched_users.append((j.user_id, j.project_id))
+            is_matched.append(j.is_approved)
 
     people = []
     for match in matched_users:
@@ -291,7 +293,6 @@ def matches():
                        db.session.query(Project).filter_by(id=match[1]).first()])
 
     matches = db.session.query(Matches).filter_by(user_id=current_user.id, is_approved=1).all()
-    print(matches)
     projects = []
     emails = []
 
@@ -301,7 +302,7 @@ def matches():
         projects.append(project.title)
         emails.append(user.email)
 
-    return render_template('matches.html', title='Эврики!', user=people, projects=projects, emails=emails)
+    return render_template('matches.html', title='Эврики!', user=people, projects=projects, emails=emails, is_matched=is_matched)
 
 
 # функция like занимается отправлением отзыва в базу данных, после чего возвращает пользователя обратно на страницу

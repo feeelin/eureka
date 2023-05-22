@@ -10,7 +10,7 @@
 <div class="card-body">
 <h3 class="card-text" style='text-align: center'>{{projects[i]}}</h3>
 <div class="d-flex justify-content-center align-items-center">
-<p>{{emails[i]}}!</p>
+<p>{{emails[i]}}</p>
 </div>
 </div>
 </div>
@@ -31,7 +31,9 @@
 <div class="d-flex justify-content-center align-items-center">
 <a href='/matches/{{el[0].id}}/{{el[1].id}}/delete' class="btn btn-danger" style='margin-right: 5px'>Удалить</a>
 <a href='/profile/{{el[0].id}}' class="btn btn-warning" style="margin-right:5px">Профиль</a>
+    {% if not is_matched[user.index(el)] %}
 <a href='/matches/{{el[0].id}}/{{el[1].id}}/eureka' class="btn btn-success" style='margin-right: 5px'>Эврика!</a>
+    {% endif %}
 </div>
 </div>
 </div>
