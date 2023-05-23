@@ -5,6 +5,8 @@
 <div class="profile_text">
 {% if user.id == project.founder_id %}
 <a class='btn btn-warning' href="/projects/{{project.id}}/delete">Удалить проект</a>
+<a class='btn btn-success' href="/projects/{{project.id}}/edit">Редактировать</a>
+
 {% else %}
 {% if like %}
 <p style='color:#8aff15'>Вы откликнулись на этот проект</p>
@@ -13,10 +15,7 @@
 {% endif %}
 {% endif %}
 <h1 class="py-3">{{project.title}}</h1>
-{% if project.about %}
-<p style="text-align: justify">{{project.about}}</p>
-{% endif %}
-<p><b>Фронтенд:</b>
+        <p><b>Фронтенд:</b>
 {% if project.front_language %}
 Требуется
 {% else %}
@@ -26,10 +25,13 @@
 <p>
 <b>Backend: </b> {{project.back_language}}
 </p>
+{% if project.about %}
+<p style="text-align: justify">{{project.about}}</p>
+{% endif %}
 </div>
-<div>
-{%if project.img%}
-<img class='profile_image' src="{{project.img}}">
+<div class="profile-image-container">
+{%if project.image%}
+<img class="profile_image" src='{{project.image}}'>
 {%endif%}
 </div>
 </div>

@@ -34,15 +34,15 @@ a:hover{
 }
 
 .profile_text{
-  max-width: 50%;
+  max-width: 70%;
   margin-right: auto;
 }
 
 .profile_image{
-  height: 500px;
-  margin-right: 0px;
-  margin-left: auto;
-  border-radius: 10px;
+    margin-left: 41%;
+    margin-top: 15%;
+    max-width: 70%;
+    border-radius: 5%;
 }
 
 .reg_img{
